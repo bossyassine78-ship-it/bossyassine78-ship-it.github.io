@@ -1,42 +1,46 @@
-# SHEMKAR | Application Security Research Portfolio
+# SHEMKAR — Portfolio (PRIVATE DRAFT)
 
-A lightweight, mobile-friendly, no-build static website created for the GitHub Pages user site of `bossyassine78-ship-it`.
+This repository is a **work-in-progress website**, not a bug bounty report repository. Please review the website before any public launch.
 
-## Contents
+**Current state:** GitHub repository set to Private. Work on this branch (`draft/portfolio-review`) is NOT a GitHub Pages release. Do not merge or publish until the owner approves.
 
-- `index.html`: homepage, research cards, project links, methodology
-- `research/evidence-before-confidence.html`: original reflection on capturing reproducible evidence
-- `labs/session-lifecycle.html`: fictional interactive JavaScript security state-machine exercise
-- `assets/`: styles, script, favicon
+## What is here?
 
-**Safety and disclosure:** No private bug bounty submissions, real endpoint names, real tokens, cookies, raw proofs of concept, or screenshots are included. The research field note shares only general lessons; the interactive lab is explicitly fictional. Do not copy the uploaded report HTML or its assets into this public repo.
+- `index.html`: the homepage with research topics and projects.
+- `research/evidence-before-confidence.html`: a personal article about evidence and reproducibility. It does not disclose a private report.
+- `research/oauth-recovery-chain.html`, `research/mfa-state-boundary.html`, `research/function-level-authorization.html`, `research/graphql-alt-entrypoint.html`: original analysis of **other researchers' already-public** HackerOne/Bugcrowd write-ups. Each article links to the original author/source. These are NOT Shemkar's own reported bugs.
+- `labs/session-lifecycle.html`: an independently built fictional interactive learning demo.
+- `assets/style.css`: the site's visual style.
+- `assets/app.js`: mobile menu and lab interactivity.
+- `README.md`: this explanation for the repository owner, NOT a page or security report shown as a featured article.
 
-## Test locally
+## How to PREVIEW privately (no hosting)
 
-From this directory:
+1. While logged into GitHub, open this private repository.
+2. Click **Code → Download ZIP**.
+3. Extract the ZIP somewhere on your computer.
+4. Open `index.html` in a browser. The CSS, scripts, pages and fictional lab use relative paths and should work offline.
 
-```sh
+Optional local server (from the extracted folder):
+
+```bash
 python3 -m http.server 8000
 ```
 
-Visit http://localhost:8000 .
+Then open `http://localhost:8000`.
 
-## Publish free with GitHub Pages
+## Important distinctions
 
-1. On GitHub, sign in as `bossyassine78-ship-it` and create a **public** repository named `bossyassine78-ship-it.github.io` (exactly).
-2. Upload all files and folders **inside** this directory to the **root** of the new repository. (Do not upload the containing `shemkar-portfolio` folder itself.)
-3. Open repository **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**, select **main** and **/(root)**, then Save.
-4. Once GitHub confirms deployment, visit `https://bossyassine78-ship-it.github.io`.
+- **Private repository** = only authorized GitHub accounts can read its source.
+- **Public research** in the articles = original reports that other researchers have already published. It does **not** mean the portfolio should be public now.
+- **GitHub Pages** is a separate website deployment. A private repository alone is not a promise that a Pages website is private; review Pages settings before sharing or launching.
 
-Official docs: https://docs.github.com/en/pages/quickstart
+No private Bugcrowd reports, HTTP requests, target names, real PoC captures, tokens or cookies have been intentionally added to this site. Review all words and links before publishing.
 
-## Before publishing
+## Release checklist (not approved yet)
 
-- Review the text for whether it sounds like you. Nothing is presented as a verified private vulnerability.
-- Add a public LinkedIn URL or an email contact only after choosing what you want made public.
-- Add more work only after confirming its disclosure permissions.
-- Keep research claims tied to verified evidence. Avoid implying a program patched a finding without confirmation.
-
-## Editing
-
-All text is plain HTML. Styles are in `assets/style.css`. The small navigation and interactive lab code are in `assets/app.js`. No framework or npm required.
+- [ ] Owner reviews every page and approves positioning.
+- [ ] Owner approves which credited public-research analyses to keep.
+- [ ] Visual/browser QA on mobile and desktop.
+- [ ] Ensure no private vulnerability disclosure.
+- [ ] Explicit owner approval before publishing website or merging draft changes to `main`.
