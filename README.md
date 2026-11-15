@@ -1,42 +1,57 @@
-# SHEMKAR | Application Security Research Portfolio
+# SHEMKAR
 
-A lightweight, mobile-friendly, no-build static website created for the GitHub Pages user site of `bossyassine78-ship-it`.
+**Application Security Research · Security Testing · Systems Programming**
 
-## Contents
+I investigate identity, authorization and session lifecycle boundaries. My focus is reproducible observations, clear test prerequisites, and practical fixes.
 
-- `index.html`: homepage, research cards, project links, methodology
-- `research/evidence-before-confidence.html`: original reflection on capturing reproducible evidence
-- `labs/session-lifecycle.html`: fictional interactive JavaScript security state-machine exercise
-- `assets/`: styles, script, favicon
+**Portfolio:** https://bossyassine78-ship-it.github.io/
 
-**Safety and disclosure:** No private bug bounty submissions, real endpoint names, real tokens, cookies, raw proofs of concept, or screenshots are included. The research field note shares only general lessons; the interactive lab is explicitly fictional. Do not copy the uploaded report HTML or its assets into this public repo.
+## Featured work
 
-## Test locally
+| Project | Demonstrates | Status |
+| --- | --- | --- |
+| [Original authorization lab](labs/authz-lab/) | Local HTTP API with BOLA, role authorization and deleted-account state flaws. Vulnerable/fixed behavior and Python regression tests. | Original runnable lab |
+| [Technical assessment](research/sample-api-assessment.html) | Full synthetic assessment with HTTP evidence, root causes, remediation and retest. | Published lab document |
+| [Some of my losses. One of my wins.](research/some-of-my-losses-one-win.html) | Personal learning from research, reproduction, review and evidence limits. | Disclosure-safe field notes |
+| [Session-state demonstration](labs/session-lifecycle.html) | Client-side simulation of token-only versus account-state-aware checks. | Interactive lab |
+| [printf_checker](https://github.com/bossyassine78-ship-it/printf_checker) | C printf test automation. | Public |
+| [libft](https://github.com/bossyassine78-ship-it/libft) | C standard-library fundamentals and linked lists. | Public |
+| ft_printf | Variadic formatted output in C. | WIP, private source |
 
-From this directory:
+## Research workflow
+
+1. Define the expected security invariant and trust boundary.
+2. Model the smallest reproducible hypothesis.
+3. Preserve exact request, response, state, assumptions and timing.
+4. Separate demonstrated impact from speculative exploitation.
+5. Verify the result after remediation.
+
+## Run
+
+Website: static HTML, CSS and JavaScript. No build step.
 
 ```sh
-python3 -m http.server 8000
+python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-Visit http://localhost:8000 .
+From the repository root, open http://127.0.0.1:8000.
 
-## Publish free with GitHub Pages
+API lab:
 
-1. On GitHub, sign in as `bossyassine78-ship-it` and create a **public** repository named `bossyassine78-ship-it.github.io` (exactly).
-2. Upload all files and folders **inside** this directory to the **root** of the new repository. (Do not upload the containing `shemkar-portfolio` folder itself.)
-3. Open repository **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**, select **main** and **/(root)**, then Save.
-4. Once GitHub confirms deployment, visit `https://bossyassine78-ship-it.github.io`.
+```sh
+cd labs/authz-lab
+python3 -m unittest -v test_lab.py
+```
 
-Official docs: https://docs.github.com/en/pages/quickstart
+## Layout
 
-## Before publishing
+- `index.html` homepage
+- `assets/` presentation and interactions
+- `research/` writing and synthetic case studies
+- `labs/` local exercises and reproducible source
 
-- Review the text for whether it sounds like you. Nothing is presented as a verified private vulnerability.
-- Add a public LinkedIn URL or an email contact only after choosing what you want made public.
-- Add more work only after confirming its disclosure permissions.
-- Keep research claims tied to verified evidence. Avoid implying a program patched a finding without confirmation.
+## Disclosure
 
-## Editing
+Real-world security research is published only with permission under applicable program rules. The public portfolio does not reproduce confidential submissions, report IDs, actual target endpoints, credentials, victim data or undisclosed exploit details. Synthetic examples are explicitly labeled.
 
-All text is plain HTML. Styles are in `assets/style.css`. The small navigation and interactive lab code are in `assets/app.js`. No framework or npm required.
+*Evidence before confidence.*
