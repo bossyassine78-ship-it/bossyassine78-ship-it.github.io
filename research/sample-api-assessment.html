@@ -1,0 +1,45 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Full original synthetic API authorization assessment with requests, responses, remediation and repeatable tests."><title>Authorization Security Assessment | SHEMKAR</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/style.css"><script defer src="../assets/app.js"></script></head><body>
+<header class="site-header"><div class="wrap header-inner"><a class="brand" href="../index.html"><span class="brand-mark">S</span><span>SHEMKAR.</span></a><button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav">Menu ☰</button><nav id="site-nav" class="nav" aria-label="Main navigation"><a href="../index.html#research">Research</a><a href="../index.html#projects">Projects</a></nav></div></header>
+<main class="wrap article-layout"><article class="article"><div class="eyebrow">ORIGINAL API SECURITY LAB / REPORT 001</div><h1>Authorization assessment: from evidence to retest.</h1><p class="article-lead">A complete technical assessment of a localhost API that I built with intentional authorization defects. The service, users, tokens and data are fictional. This is not a client assessment or evidence of a real company's vulnerability.</p>
+<div class="note"><strong>Scope:</strong> `http://127.0.0.1:8765` · Python standard-library server · three test principals (Alice, Bob, admin) · two orders · privileged invitation function. Every scenario has vulnerable and fixed modes.</div>
+<h2>01 / Broken object-level authorization</h2><p><strong>Finding:</strong> a valid user credential can retrieve a different account's order without ownership validation.</p>
+<div class="code">GET /api/orders/4002 HTTP/1.1
+Host: 127.0.0.1:8765
+Authorization: Bearer alice-demo-token
+
+HTTP/1.0 200 OK
+Content-Type: application/json
+
+{"order":{"id":"4002","owner":"bob","item":"Keyboard","total":60}}</div>
+<p><strong>Expected:</strong> Alice must not access Bob's record. <strong>Root cause:</strong> an authentication check without a resource ownership check. <strong>Fix:</strong> enforce object owner or explicit administrator role at the server-side lookup. <strong>Retest:</strong> HTTP 404 with <code>{"error":"NOT_FOUND"}</code>.</p>
+<h2>02 / Broken function-level authorization</h2><p><strong>Finding:</strong> a member can invoke the administrator invitation function because login state is mistaken for admin privilege.</p>
+<div class="code">POST /api/admin/invitations HTTP/1.1
+Host: 127.0.0.1:8765
+Authorization: Bearer alice-demo-token
+Content-Type: application/json
+
+{"email":"new-admin@lab.invalid"}
+
+HTTP/1.0 201 Created</div>
+<p><strong>Expected:</strong> only an admin can create an admin invitation. <strong>Fix:</strong> enforce action-specific role authorization. <strong>Retest:</strong> HTTP 403 with <code>{"error":"FORBIDDEN"}</code>.</p>
+<h2>03 / Deleted-account credential reuse</h2><p><strong>Finding:</strong> the authentication guard accepts a known demo token even when its associated account has been marked deleted.</p>
+<div class="code">DELETE /api/me HTTP/1.1
+Authorization: Bearer alice-demo-token
+
+HTTP/1.0 200 OK
+{"deleted":"alice"}
+
+GET /api/me HTTP/1.1
+Authorization: Bearer alice-demo-token
+
+VULNERABLE: 200 OK
+FIXED: 401 Unauthorized</div>
+<p><strong>Expected:</strong> deleted identities no longer authorize requests. <strong>Fix:</strong> account-active checks plus complete credential revocation. <strong>Impact limitation:</strong> a remote attacker obtaining another person's token has not been demonstrated, and this lab is not a claim of account takeover.</p>
+<h2>Reproduction and verification</h2><div class="code">cd labs/authz-lab
+python3 -m unittest -v test_lab.py
+
+# Or run either mode manually:
+python3 server.py --mode vulnerable
+python3 server.py --mode fixed</div>
+<p>The regression suite tests both vulnerable and fixed outcomes using localhost HTTP calls. The complete source and additional requests are included in the <a href="../labs/authz-lab/README.md">lab README</a> and the <a href="technical-authz-lab.html">technical walkthrough</a>.</p>
+<div class="actions"><a class="btn btn-primary" href="technical-authz-lab.html">See all tests ↗</a><a class="btn btn-secondary" href="../index.html">Return home →</a></div></article><aside class="aside"><div class="aside-box sticky"><h3>Scope and integrity</h3><p>Synthetic data only. Localhost only. No production impact claim.</p><p>3 findings · 2 modes · regression tests.</p></div></aside></main><footer class="wrap footer"><a href="../index.html" class="brand"><span class="brand-mark">S</span><span>SHEMKAR.</span></a><p>Original lab, reproducible evidence.</p></footer></body></html>
